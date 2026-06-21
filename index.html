@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ПРОТОКОЛ УНИЧТОЖЕНИЯ</title>
+    <title>ПРОТОКОЛ УНИЧТОЖЕНИЯ: АКТИВЕН</title>
     <style>
         body {
             margin: 0;
@@ -18,21 +18,16 @@
             align-items: center;
             text-align: center;
             overflow: hidden;
-            /* Хроматическая аберрация в стиле VHS */
             text-shadow: 2px 0px 1px rgba(255,0,0,0.7), -2px 0px 1px rgba(0,0,255,0.7);
         }
 
-        /* Эффект старого телевизора (сканлайны) */
         body::after {
             content: " ";
             display: block;
             position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
+            top: 0; left: 0; bottom: 0; right: 0;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 2;
+            z-index: 10;
             background-size: 100% 2px, 3px 100%;
             pointer-events: none;
         }
@@ -42,33 +37,81 @@
             position: relative;
             max-width: 800px;
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         h1 {
             font-size: 2rem;
             text-transform: uppercase;
             letter-spacing: 2px;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
+        }
+
+        .warning-text {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: #ffaa00;
+        }
+
+        /* --- ДИЗАЙН БОМБЫ --- */
+        .c4-bomb {
+            position: relative;
+            margin: 20px 0 40px 0;
+            width: 380px;
+        }
+
+        .wires {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1;
+        }
+
+        .wire {
+            width: 12px;
+            height: 60px;
+            border-radius: 5px;
+            box-shadow: inset 2px 2px 5px rgba(0,0,0,0.7);
+        }
+        .wire-red { background: #d00; }
+        .wire-blue { background: #00d; }
+        .wire-yellow { background: #dd0; }
+
+        .bomb-body {
+            background: #111;
+            border: 6px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: inset 0 0 40px #000, 0 10px 30px rgba(0,0,0,0.8);
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         #timer {
-            font-size: 7rem;
+            font-size: 6rem;
             color: #ff2a2a;
-            margin: 20px 0;
             font-weight: bold;
-            text-shadow: 0 0 15px rgba(255, 0, 0, 0.8), 3px 0px 2px rgba(0,255,255,0.7);
-            animation: glitch 2s infinite;
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.9), 3px 0px 2px rgba(0,255,255,0.7);
+            background: #0a0a0a;
+            padding: 10px 20px;
+            border: 2px solid #222;
+            border-radius: 5px;
+            animation: glitch 2.5s infinite;
         }
 
         .tick {
-            opacity: 0.5;
+            opacity: 0.6;
         }
 
-        p {
-            font-size: 1.2rem;
-            margin-bottom: 40px;
-        }
-
+        /* --- КНОПКИ --- */
         .btn-group {
             display: flex;
             gap: 30px;
@@ -88,6 +131,7 @@
             transition: all 0.2s;
             text-shadow: 2px 0px 1px rgba(255,0,0,0.7);
             box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+            z-index: 4;
         }
 
         button:hover {
@@ -104,20 +148,55 @@
             animation: blink 1.5s infinite;
         }
 
-        /* Анимация глитча для таймера */
+        /* --- АНИМАЦИИ --- */
         @keyframes glitch {
             0% { transform: translate(0) }
-            20% { transform: translate(-3px, 2px) }
-            40% { transform: translate(-3px, -2px) }
-            60% { transform: translate(3px, 2px) }
-            80% { transform: translate(3px, -2px) }
+            20% { transform: translate(-2px, 1px) }
+            40% { transform: translate(-2px, -1px) }
+            60% { transform: translate(2px, 1px) }
+            80% { transform: translate(2px, -1px) }
             100% { transform: translate(0) }
         }
 
-        /* Анимация мигания текста */
         @keyframes blink {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.3; }
+        }
+
+        /* Анимация тряски экрана при взрыве */
+        @keyframes shake {
+            0% { transform: translate(2px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+
+        /* Эффект огненной вспышки */
+        .explosion-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: radial-gradient(circle, #ffffff 10%, #ffcc00 30%, #ff0000 70%, #000000 100%);
+            opacity: 0;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        .boom-active {
+            animation: blast 1.5s forwards;
+        }
+
+        @keyframes blast {
+            0% { opacity: 0; transform: scale(0.5); }
+            10% { opacity: 1; transform: scale(1.2); }
+            30% { opacity: 1; background: #fff; }
+            100% { opacity: 1; background: #000; }
         }
     </style>
 </head>
@@ -125,9 +204,18 @@
 
     <div class="container" id="main">
         <h1>> СИСТЕМА УНИЧТОЖЕНИЯ АКТИВИРОВАНА_</h1>
-        <p>КРИТИЧЕСКАЯ УГРОЗА. ДО ВЗРЫВА ОСТАЛОСЬ:</p>
+        <p class="warning-text">КРИТИЧЕСКАЯ УГРОЗА. БОЕГОЛОВКА ВЗВЕДЕНА.</p>
         
-        <div id="timer">05:00</div>
+        <div class="c4-bomb" id="bomb">
+            <div class="wires">
+                <div class="wire wire-red"></div>
+                <div class="wire wire-blue"></div>
+                <div class="wire wire-yellow"></div>
+            </div>
+            <div class="bomb-body">
+                <div id="timer">01:00</div>
+            </div>
+        </div>
         
         <p>ТРЕБУЕТСЯ ВВОД ДАННЫХ ДЛЯ ПРЕДОТВРАЩЕНИЯ ВЗРЫВА:</p>
         
@@ -140,10 +228,11 @@
     </div>
 
     <script>
-        let time = 60; // 5 минут в секундах
+        let time = 60; // Изменено на 1 минуту
         const timerEl = document.getElementById('timer');
         const buttonsEl = document.getElementById('buttons');
         const messageEl = document.getElementById('message');
+        const bombEl = document.getElementById('bomb');
         let interval;
 
         function updateTimer() {
@@ -164,11 +253,24 @@
         }
 
         function explode() {
-            document.body.style.backgroundColor = "white";
+            // Тряска экрана
+            document.body.style.animation = "shake 0.3s infinite";
+            
+            // Создаем вспышку
+            let flash = document.createElement("div");
+            flash.className = "explosion-overlay boom-active";
+            document.body.appendChild(flash);
+
+            // Через 1.2 секунды убираем интерфейс и оставляем черный экран с ошибкой
             setTimeout(() => {
+                document.body.style.animation = "none";
                 document.body.style.backgroundColor = "#000";
-                document.getElementById('main').innerHTML = '<h1 style="color:red; font-size:4rem; text-shadow:none;">СИГНАЛ ПОТЕРЯН</h1>';
-            }, 100);
+                document.body.innerHTML = `
+                    <div style="z-index: 10000; position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh;">
+                        <h1 style="color: red; font-size: 3rem; text-shadow: none;">СВЯЗЬ ПОТЕРЯНА</h1>
+                        <p style="color: #666; font-size: 1.5rem;">> Объект уничтожен.</p>
+                    </div>`;
+            }, 1200);
         }
 
         function defuse(choice) {
@@ -181,11 +283,13 @@
 
             if(choice === 'sasha') {
                 messageEl.innerHTML = "ВЫБОР ПРИНЯТ.<br>ЛЮБОВЬ К САШЕ ПОДТВЕРЖДЕНА.<br>БОМБА ОБЕЗВРЕЖЕНА.";
+                bombEl.style.opacity = "0.5";
             } else if (choice === 'mark') {
                 messageEl.innerHTML = "ЖЕРТВА ПРИНЯТА.<br>МАРК ОТДАН СИСТЕМЕ.<br>ПРОТОКОЛ ОТМЕНЕН.";
                 messageEl.style.color = "#ff2a2a";
                 timerEl.style.color = "#ff2a2a";
                 timerEl.style.textShadow = "0 0 10px #ff2a2a";
+                bombEl.style.opacity = "0.5";
             }
         }
 
